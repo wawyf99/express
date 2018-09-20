@@ -11,7 +11,7 @@ require('body-parser-xml')(bodyParser);
 var app = express();
 
 /**
- * 跨域设置
+ * 跨域设置1
  */
 app.all('*', function (req, res, next) {
     //本地环境
