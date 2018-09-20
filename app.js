@@ -11,15 +11,13 @@ require('body-parser-xml')(bodyParser);
 var app = express();
 
 /**
- * 跨域设置1
+ * 跨域设置
  */
 app.all('*', function (req, res, next) {
     //本地环境
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-    //测试环境
-    //res.header("Access-Control-Allow-Origin", "http://agent.test.sxmj.szdhkj.com.cn")
+    //res.header("Access-Control-Allow-Origin", "http://localhost:3000");
     //正式环境
-    //res.header("Access-Control-Allow-Origin", "http://agent.sxmj.szdhkj.com.cn");
+    res.header("Access-Control-Allow-Origin", "http://working.rzzc.ltd");
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
