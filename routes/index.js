@@ -4,10 +4,8 @@ const wecaht = require('../common/wechat/wechat-oath');
 const indexServer = require('../server/index-server');
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-  res.render('index', {
-    title: 'Express'
-  });
+router.get('/a', function (req, res, next) {
+    res.send('123456');
 });
 
 /**
