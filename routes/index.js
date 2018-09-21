@@ -4,7 +4,7 @@ const wecaht = require('../common/wechat/wechat-oath');
 const indexServer = require('../server/index-server');
 
 /* GET home page. */
-router.post('/', function (req, res, next) {
+router.get('/', function (req, res, next) {
   res.render('index', {
     title: 'Express'
   });
@@ -13,7 +13,7 @@ router.post('/', function (req, res, next) {
 /**
  * 测试接口
  */
-router.post('/test', (req, res, next) => {
+router.get('/test', (req, res, next) => {
     indexServer.test(result => {
         res.send(result);
     });
