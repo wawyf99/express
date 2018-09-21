@@ -4,6 +4,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const session = require('express-session');
+const FileStore = require('session-file-store')(session);
 var index = require('./routes/index');
 var wechat = require('./routes/wechat-controller');
 const swig = require('swig');
@@ -15,9 +16,13 @@ var app = express();
  */
 app.all('*', function (req, res, next) {
     //本地环境
-    //res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    //if(req.headers.origin == 'http://localhost:5520' || req.headers.origin == 'http://localhost:3000'){
     //正式环境
-    res.header("Access-Control-Allow-Origin", "http://working.rzzc.ltd");
+    if(req.headers.origin == 'http://working.rzzc.ltd' || req.headers.origin == 'http://work.admin.rzzc.ltd'){
+        res.header("Access-Control-Allow-Origin", req.headers.origin);
+    }
+
+    //res.header("Access-Control-Allow-Origin", "http://working.rzzc.ltd");
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
@@ -50,6 +55,19 @@ app.use(bodyParser.xml({
         }
     }
 }));
+
+app.use(cookieParser('dianhai'));
+app.use(session({
+    name: "identityKey",
+    secret: 'dianhai', // 用来对session id相关的cookie进行签名
+    saveUninitialized: false, // 是否自动保存未初始化的会话，建议false
+    resave: false, // 是否每次都重新保存会话，建议false
+    rolling: true,
+    cookie: {
+        maxAge: 3600000 // 有效期，单位是毫秒
+    }
+}));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
@@ -65,6 +83,8 @@ app.use('/public', express.static('public'));
 
 
 app.use('/', index);
+const account = require('./routes/account');
+app.use('/admin', account);
 app.use('/wechat', wechat);
 
 
