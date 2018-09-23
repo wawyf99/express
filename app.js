@@ -16,9 +16,9 @@ var app = express();
  */
 app.all('*', function (req, res, next) {
     //本地环境
-    //if(req.headers.origin == 'http://localhost:5520' || req.headers.origin == 'http://localhost:3000'){
+    if(req.headers.origin == 'http://localhost:5520' || req.headers.origin == 'http://localhost:3000'){
     //正式环境
-    if(req.headers.origin == 'http://working.rzzc.ltd' || req.headers.origin == 'http://work.admin.rzzc.ltd'){
+    //if(req.headers.origin == 'http://working.rzzc.ltd' || req.headers.origin == 'http://work.admin.rzzc.ltd'){
         res.header("Access-Control-Allow-Origin", req.headers.origin);
     }
 
@@ -85,6 +85,8 @@ app.use('/public', express.static('public'));
 app.use('/', index);
 const account = require('./routes/account');
 app.use('/admin', account);
+const role = require('./routes/role');
+app.use('/role', role);
 app.use('/wechat', wechat);
 
 

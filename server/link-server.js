@@ -2,8 +2,8 @@
  * 后台链接服务类
  */
 
-var connection = require('../utils/db');
-const db = new connection('operation');
+var connection = require('../common/db');
+const db = new connection('express');
 
 //引用实体模型
 var Link = require("../models/express/T_Link_New.js");
