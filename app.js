@@ -18,7 +18,7 @@ app.all('*', function (req, res, next) {
     //本地环境
     //if(req.headers.origin == 'http://localhost:5520' || req.headers.origin == 'http://localhost:3000'){
     //正式环境
-    if(req.headers.origin == 'http://working.rzzc.ltd' || req.headers.origin == 'http://work.admin.rzzc.ltd'){
+    if(req.headers.origin == 'http://working.rzzc.ltd' || req.headers.origin == 'http://working.admin.rzzc.ltd'){
         res.header("Access-Control-Allow-Origin", req.headers.origin);
     }
 
