@@ -5,8 +5,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
-var index = require('./routes/index');
-var wechat = require('./routes/wechat-controller');
 const swig = require('swig');
 require('body-parser-xml')(bodyParser);
 var app = express();
@@ -81,12 +79,13 @@ app.use('/public', express.static('public'));
 // app.use('/wechat', wechatFilter.checkSignature());
 
 
-
-app.use('/', index);
+const chart = require('./routes/chart');
+app.use('/chart', chart);
 const account = require('./routes/account');
 app.use('/admin', account);
 const role = require('./routes/role');
 app.use('/role', role);
+const wechat = require('./routes/wechat-controller');
 app.use('/wechat', wechat);
 
 
