@@ -54,10 +54,10 @@ exports.WechatConfig = {
     authorizeCode: true,
     //wechatNotifyUrl ： 微信回调域名
     //wechatNotifyUrl: "http://agentapi.sxmj.szdhkj.com.cn",
-    wechatNotifyUrl: "http://weixinapi.szdhkj.com.cn",
+    wechatNotifyUrl: "http://working.api.rzzc.ltd",
     //客户端请求地址->适用于前后端分离
     //clientUrl: "http://agent.sxmj.szdhkj.com.cn",
-    clientUrl: "http://agent.sxmj.szdhkj.com.cn",
+    clientUrl: "http://working.rzzc.ltd",
     //商户ID->微信支付
     machId: 1502816481,
     //支付key
@@ -66,7 +66,7 @@ exports.WechatConfig = {
     notifyUrl: 'http://kunjust.imwork.net/wechat/notify',
     //访问当前站点的地址
     //currentSiteUrl: "http://agentapi.sxmj.szdhkj.com.cn",
-    currentSiteUrl: "http://weixinapi.szdhkj.com.cn",
+    currentSiteUrl: "http://working.api.rzzc.ltd",
     //dubug 调试模式下是否启用固定openid，false为授权获取动态openid，true为固定使用openid。前端开发调试下必须设置为true
     dubug: false,
     //调试模式下的openid
