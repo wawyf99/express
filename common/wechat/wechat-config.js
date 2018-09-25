@@ -20,13 +20,10 @@ exports.WechatConfig = {
      * 1.带url字段为像用户回复带跳转的消息内容
      * 2.不带url字段为像用户回复文本消息
      */
-    msg: [{
-        key: '联系我们',
-        content: '请加客服小姐姐微信号，dhkj_kf01'
-    },
+    msg: [
         {
             key: '测试',
-            url: 'http://mj.agentapi.dh.szdhkj.com.cn',
+            url: 'http://working.rzzc.ltd',
             content: '测试地址'
         }
     ],

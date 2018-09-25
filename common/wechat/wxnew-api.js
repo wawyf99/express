@@ -27,7 +27,6 @@ const WxApi = {
                 resolve(result);
             });
         });
-
     }
 }
 
