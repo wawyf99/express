@@ -4,18 +4,15 @@
 
 //微信配置
 exports.WechatConfig = {
-    //点海互娱
-    // appId: 'wxb36f77639863809b', //appId
-    // appSecret: '2f81af0eb4490bdf1be60f778bb1fbda', //appSecret
 
     //点海乐玩
-    appId: 'wx8f1f896ca5ff9142', //appId
-    appSecret: '1a9f88282a05998c796d0b7b2d77727f', //appSecret
-    //点海乐玩测试
-    //appId: 'wx51d1872e4788491d', //appId
-    //appSecret: 'b0ec281546205564ca0f4a293566def0', //appSecret
+    //appId: 'wx8f1f896ca5ff9142', //appId
+    //appSecret: '1a9f88282a05998c796d0b7b2d77727f', //appSecret
+    //working测试
+    appId: 'wx51d1872e4788491d', //appId
+    appSecret: 'b0ec281546205564ca0f4a293566def0', //appSecret
 
-    token: 'dianhaikeji', //token
+    token: 'working', //token
 
     shareImg : '/public/image/img.jpg',
     /**
