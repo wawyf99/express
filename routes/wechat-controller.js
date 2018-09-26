@@ -129,8 +129,8 @@ router.post('/receive', function (req, res, next) {
     res.send('success');
 });
 
-router.get('/wxinfo', (req, res, next) => {
-    var _url = req.query.url;
+router.post('/wxinfo', (req, res, next) => {
+    var _url = req.body.url;
     wxApi.WxApi.getShareConfig(_url).then(result => {
         res.send(result);
     });
