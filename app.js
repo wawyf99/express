@@ -17,59 +17,31 @@ var app = express();
 // 判断origin是否在域名白名单列表中
 function isOriginAllowed(origin, allowedOrigin) {
 
-/*    if (Array.isArray(allowedOrigin)) {
-        console.log(1)
-        for(let i = 0; i < allowedOrigin.length; i++) {
-            isOriginAllowed(origin, allowedOrigin[i]);
-        }
-        //return false;
-    } else if (isString(allowedOrigin)) {
-        console.log(allowedOrigin)
-        return origin === allowedOrigin;
-    } else if (allowedOrigin instanceof RegExp) {
-        console.log(allowedOrigin)
-        return allowedOrigin.test(origin);
-    } else {
-        console.log(allowedOrigin)
-        return !!allowedOrigin;
-    }*/
-    for(let i = 0; i < allowedOrigin.length; i++) {
-        if(origin.indexOf(allowedOrigin[i] != -1)){
-            //console.log(origin);
-            return origin;
-        }
-    }
 }
+
 const ALLOW_ORIGIN = [ // 域名白名单
-    '*.lyxkjx.com',
-    '*.rzzc.ltd',
+    'www.lyxkjx.com',
+    'www.rzzc.ltd',
     'localhost'
 ];
-
 
 app.all('*', function (req, res, next) {
 
     let reqOrigin = req.headers.origin; // request响应头的origin属性
-    //let reqOrigin = ''; // request响应头的origin属性
-    //console.log(reqOrigin);
 
-    //console.log(isOriginAllowed(reqOrigin, ALLOW_ORIGIN));
-
-    if(isOriginAllowed(reqOrigin, ALLOW_ORIGIN)) {
-        console.log(reqOrigin);
-        // 设置CORS为请求的Origin值
-        res.header("Access-Control-Allow-Origin", reqOrigin);
+    for(let i = 0; i < ALLOW_ORIGIN.length; i++) {
+        let _str = '';
+        if(ALLOW_ORIGIN[i] == 'localhost'){
+            _str = 'localhost';
+        }else{
+            _str = ALLOW_ORIGIN[i].split('www.')[1];
+        }
+        if(reqOrigin.indexOf(_str) >= 0){
+            console.log(reqOrigin);
+            res.header("Access-Control-Allow-Origin", reqOrigin);
+        }
     }
-    //本地环境
-    //if(req.headers.origin == 'http://localhost:5520' || req.headers.origin == 'http://localhost:3000'){
-    //正式环境
-    //if(req.headers.origin == ){
-    //if(req.headers.origin == 'http://working.rzzc.ltd' || req.headers.origin == 'http://working.admin.rzzc.ltd'){
-       // res.header("Access-Control-Allow-Origin", req.headers.origin || '*');
-    //}
 
-    //res.header("Access-Control-Allow-Origin", '*');
-    //res.header("Access-Control-Allow-Origin", "http://working.rzzc.ltd");
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
