@@ -43,10 +43,15 @@ const ALLOW_ORIGIN = [ // 域名白名单
 app.all('*', function (req, res, next) {
 
     let reqOrigin = req.headers.origin; // request响应头的origin属性
+    console.log(reqOrigin);
+    console.log(ALLOW_ORIGIN);
 
     if(isOriginAllowed(reqOrigin, ALLOW_ORIGIN)) {
         // 设置CORS为请求的Origin值
+        console.log(1)
         res.header("Access-Control-Allow-Origin", reqOrigin);
+    }else{
+        console.log(2)
     }
     //本地环境
     //if(req.headers.origin == 'http://localhost:5520' || req.headers.origin == 'http://localhost:3000'){
