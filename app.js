@@ -16,10 +16,12 @@ app.all('*', function (req, res, next) {
     //本地环境
     //if(req.headers.origin == 'http://localhost:5520' || req.headers.origin == 'http://localhost:3000'){
     //正式环境
-    if(req.headers.origin == 'http://working.rzzc.ltd' || req.headers.origin == 'http://working.admin.rzzc.ltd'){
-        res.header("Access-Control-Allow-Origin", req.headers.origin);
-    }
+    //if(req.headers.origin == ){
+    //if(req.headers.origin == 'http://working.rzzc.ltd' || req.headers.origin == 'http://working.admin.rzzc.ltd'){
+       // res.header("Access-Control-Allow-Origin", req.headers.origin || '*');
+    //}
 
+    res.header("Access-Control-Allow-Origin", req.headers.origin || '*');
     //res.header("Access-Control-Allow-Origin", "http://working.rzzc.ltd");
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
