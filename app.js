@@ -12,7 +12,42 @@ var app = express();
 /**
  * 跨域设置
  */
+
+
+// 判断origin是否在域名白名单列表中
+function isOriginAllowed(origin, allowedOrigin) {
+    if (_.isArray(allowedOrigin)) {
+        for(let i = 0; i < allowedOrigin.length; i++) {
+            if(isOriginAllowed(origin, allowedOrigin[i])) {
+                return true;
+            }
+        }
+        return false;
+    } else if (_.isString(allowedOrigin)) {
+        return origin === allowedOrigin;
+    } else if (allowedOrigin instanceof RegExp) {
+        return allowedOrigin.test(origin);
+    } else {
+        return !!allowedOrigin;
+    }
+}
+
+const ALLOW_ORIGIN = [ // 域名白名单
+    '*.lyxkjx.com',
+    '*.233.666.com',
+    'hello.world.com',
+    'hello..*.com'
+];
+
+
 app.all('*', function (req, res, next) {
+
+    let reqOrigin = req.headers.origin; // request响应头的origin属性
+
+    if(isOriginAllowed(reqOrigin, ALLOW_ORIGIN)) {
+        // 设置CORS为请求的Origin值
+        res.header("Access-Control-Allow-Origin", reqOrigin);
+    }
     //本地环境
     //if(req.headers.origin == 'http://localhost:5520' || req.headers.origin == 'http://localhost:3000'){
     //正式环境
@@ -21,7 +56,7 @@ app.all('*', function (req, res, next) {
        // res.header("Access-Control-Allow-Origin", req.headers.origin || '*');
     //}
 
-    res.header("Access-Control-Allow-Origin", req.headers.origin || '*');
+    res.header("Access-Control-Allow-Origin", '*');
     //res.header("Access-Control-Allow-Origin", "http://working.rzzc.ltd");
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
