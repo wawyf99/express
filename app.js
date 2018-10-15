@@ -16,7 +16,7 @@ var app = express();
 
 // 判断origin是否在域名白名单列表中
 function isOriginAllowed(origin, allowedOrigin) {
-    if (isArray(allowedOrigin)) {
+    if (Array.isArray(allowedOrigin)) {
         for(let i = 0; i < allowedOrigin.length; i++) {
             if(isOriginAllowed(origin, allowedOrigin[i])) {
                 return true;
@@ -30,6 +30,10 @@ function isOriginAllowed(origin, allowedOrigin) {
     } else {
         return !!allowedOrigin;
     }
+}
+
+function isString(s) {
+    return typeof s === 'string' || s instanceof String;
 }
 
 const ALLOW_ORIGIN = [ // 域名白名单
