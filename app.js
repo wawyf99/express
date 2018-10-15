@@ -16,14 +16,14 @@ var app = express();
 
 // 判断origin是否在域名白名单列表中
 function isOriginAllowed(origin, allowedOrigin) {
-    if (_.isArray(allowedOrigin)) {
+    if (isArray(allowedOrigin)) {
         for(let i = 0; i < allowedOrigin.length; i++) {
             if(isOriginAllowed(origin, allowedOrigin[i])) {
                 return true;
             }
         }
         return false;
-    } else if (_.isString(allowedOrigin)) {
+    } else if (isString(allowedOrigin)) {
         return origin === allowedOrigin;
     } else if (allowedOrigin instanceof RegExp) {
         return allowedOrigin.test(origin);
