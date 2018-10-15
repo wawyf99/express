@@ -13,12 +13,6 @@ var app = express();
  * 跨域设置
  */
 
-
-// 判断origin是否在域名白名单列表中
-function isOriginAllowed(origin, allowedOrigin) {
-
-}
-
 const ALLOW_ORIGIN = [ // 域名白名单
     'www.lyxkjx.com',
     'www.rzzc.ltd',
@@ -36,6 +30,7 @@ app.all('*', function (req, res, next) {
         }else{
             _str = ALLOW_ORIGIN[i].split('www.')[1];
         }
+        console.log(reqOrigin);
         if(reqOrigin.indexOf(_str) >= 0){
             console.log(reqOrigin);
             res.header("Access-Control-Allow-Origin", reqOrigin);
@@ -45,7 +40,7 @@ app.all('*', function (req, res, next) {
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-    res.header("X-Powered-By", ' 3.2.1')
+    res.header("X-Powered-By", ' 3.2.1');
     if (req.method == "OPTIONS")
         res.send(200); /*让options请求快速返回*/
     else next();
