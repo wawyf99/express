@@ -20,9 +20,7 @@ const ALLOW_ORIGIN = [ // 域名白名单
 ];
 
 app.all('*', function (req, res, next) {
-
     let reqOrigin = req.headers.origin; // request响应头的origin属性
-
     for(let i = 0; i < ALLOW_ORIGIN.length; i++) {
         let _str = '';
         if(ALLOW_ORIGIN[i] == 'localhost'){
@@ -36,8 +34,6 @@ app.all('*', function (req, res, next) {
             res.header("Access-Control-Allow-Origin", reqOrigin);
         }
     }
-
-
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
@@ -96,15 +92,16 @@ app.use('/public', express.static('public'));
 // app.use('/wechat', wechatFilter.checkSignature());
 
 
-const chart = require('./routes/chart');
-app.use('/chart', chart);
 const account = require('./routes/account');
 app.use('/admin', account);
 const role = require('./routes/role');
 app.use('/role', role);
 const wechat = require('./routes/wechat-controller');
 app.use('/wechat', wechat);
-
+const chat = require('./routes/chat');
+app.use('/chat', chat);
+const domain = require('./routes/domain');
+app.use('/domain', domain);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
