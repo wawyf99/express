@@ -28,9 +28,7 @@ app.all('*', function (req, res, next) {
         }else{
             _str = ALLOW_ORIGIN[i].split('www.')[1];
         }
-        console.log(reqOrigin);
         if(reqOrigin.indexOf(_str) >= 0){
-            console.log(reqOrigin);
             res.header("Access-Control-Allow-Origin", reqOrigin);
         }
     }

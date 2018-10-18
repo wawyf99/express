@@ -5,15 +5,15 @@ db = new connection('express');
 //新增内容
 exports.domainAdd = (domain, mark, gid, rand, sort, id, callback) => {
     if(id){
-        /*db.query("UPDATE `express`.`T_Chart_Info` SET `title` = ?, `img` = ?, `enrollment` = ?, `invitor` = ? WHERE `id` = ?", {
-            replacements: [title, img, enrollment, invitor, id],
+        db.query("UPDATE `express`.`T_Domain` SET `domain` = ?, `mark` = ?, `gid` = ?, `rand` = ?, `sort` = ? WHERE `id` = ?", {
+            replacements: [domain, mark, gid, rand, sort, id],
         }).spread((res) => {
             let result = {};
             result.status = true;
             result.msg = '更新成功';
             result.data = res;
             callback(result);
-        });*/
+        });
     }else{
         db.query("SELECT * FROM express.T_Domain WHERE domain = ?", {
             replacements: [domain]
@@ -38,14 +38,37 @@ exports.domainAdd = (domain, mark, gid, rand, sort, id, callback) => {
     }
 };
 //管理域名
-exports.domainList = (keywords, callback) => {
-    let _sql = '';
+exports.domainList = (keywords, rand, status, sorts, callback) => {
+    let sql = '';
+    let _sql = 'WHERE 1 = 1';
+    let _sql1 = 'BY id ASC';
     if(keywords){
-        _sql = "SELECT * FROM express.T_Domain WHERE domain LIKE '%"+keywords+"%' ORDER BY id ASC";
-    }else{
-        _sql = "SELECT * FROM express.T_Domain ORDER BY id ASC";
+        if(keywords < 5){
+            _sql += " AND mark = "+keywords;
+        }else{
+            _sql += " AND (domain LIKE '%"+keywords+"%' OR gid = '"+keywords+"') ";
+        }
+    };
+    if(rand){
+        _sql += " AND rand = "+rand;
+    };
+
+    if(status){
+        _sql += " AND status = "+status;
+    };
+
+    if(sorts == 2){
+        _sql1 = 'BY create_time ASC';
+    }else if(sorts == 3){
+        _sql1 = 'BY create_time DESC';
+    }else if(sorts == 4){
+        _sql1 = 'BY close_time ASC';
+    }else if(sorts == 5){
+        _sql1 = 'BY close_time DESC';
     }
-    db.query(_sql, {
+    sql = "SELECT * FROM express.T_Domain " + _sql + " ORDER " + _sql1;
+
+    db.query(sql, {
         replacements: [keywords],
     }).spread((results) => {
         //callback(results);
@@ -61,7 +84,7 @@ exports.domainList = (keywords, callback) => {
 
 //删除内容
 exports.domainDelete = (id, callback) => {
-    db.query("DELETE FROM `express`.`T_Domain` WHERE `id` = ?", {
+    db.query("UPDATE `express`.`T_Domain` SET `status` = 3 WHERE `id` = ?", {
         replacements: [id]
     }).spread((results) => {
         let result = {};
@@ -94,6 +117,21 @@ exports.operation = (id, status, callback) => {
             result.status = false;
             result.msg = '请勿重复操作';
             result.data = '';
+            callback(result);
+        }
+    });
+};
+
+//获取单条记录
+exports.domainOneList = (id, callback) => {
+    db.query("SELECT * FROM express.T_Domain WHERE `id` = ?", {
+        replacements: [id]
+    }).spread((results) => {
+        let result = {};
+        if(results){
+            result.status = true;
+            result.msg = '';
+            result.data = results;
             callback(result);
         }
     });

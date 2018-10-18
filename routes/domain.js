@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 const domainServer = require('../server/domain-server');
 
-
 /**
  * 新增内容
  */
@@ -25,8 +24,25 @@ router.post('/domainAdd', (req, res, next) => {
  * 管理域名
  */
 router.post('/domainList', (req, res, next) => {
-    let keywords = req.body.keywords;
-    domainServer.domainList(keywords, result => {
+    let keywords = req.body.keywords,
+        rand = req.body.rand,
+        sorts = req.body.sorts,
+        status = req.body.status;
+    switch (keywords) {
+        case 'A1':
+            keywords = 1;
+            break;
+        case 'A2':
+            keywords = 2;
+            break;
+        case 'B1':
+            keywords = 3;
+            break;
+        case 'C1':
+            keywords = 4;
+            break;
+    }
+    domainServer.domainList(keywords, rand, status, sorts, result => {
         res.send(result);
     });
 });
@@ -51,6 +67,15 @@ router.post('/operation', (req, res, next) => {
         res.send(result);
     });
 });
+
+//获取单条记录
+router.post('/domainOneList', (req, res, next) => {
+    let id = req.body.id;
+    domainServer.domainOneList(id, result => {
+        res.send(result);
+    });
+});
+
 
 
 
