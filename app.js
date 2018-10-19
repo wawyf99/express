@@ -7,6 +7,8 @@ const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const swig = require('swig');
 require('body-parser-xml')(bodyParser);
+const index = require('./routes/index');
+
 var app = express();
 
 /**
@@ -21,17 +23,22 @@ const ALLOW_ORIGIN = [ // 域名白名单
 
 app.all('*', function (req, res, next) {
     let reqOrigin = req.headers.origin; // request响应头的origin属性
-    for(let i = 0; i < ALLOW_ORIGIN.length; i++) {
-        let _str = '';
-        if(ALLOW_ORIGIN[i] == 'localhost'){
-            _str = 'localhost';
-        }else{
-            _str = ALLOW_ORIGIN[i].split('www.')[1];
+    if(reqOrigin){
+        for(let i = 0; i < ALLOW_ORIGIN.length; i++) {
+            let _str = '';
+            if(ALLOW_ORIGIN[i] == 'localhost'){
+                _str = 'localhost';
+            }else{
+                _str = ALLOW_ORIGIN[i].split('www.')[1];
+            }
+            if(reqOrigin.indexOf(_str) >= 0){
+                res.header("Access-Control-Allow-Origin", reqOrigin);
+            }
         }
-        if(reqOrigin.indexOf(_str) >= 0){
-            res.header("Access-Control-Allow-Origin", reqOrigin);
-        }
+    }else{
+        res.header("Access-Control-Allow-Origin", '*');
     }
+
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
@@ -43,12 +50,13 @@ app.all('*', function (req, res, next) {
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'html');
-app.engine('html', swig.renderFile);
+app.set('view engine', 'jade');
+
+//app.engine('html', swig.renderFile);
 
 
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+/*app.use(logger('dev'));
 app.use(bodyParser.xml({
     limit: "1MB", // Reject payload bigger than 1 MB
     xmlParseOptions: {
@@ -63,7 +71,25 @@ app.use(bodyParser.xml({
             req.rawBody = buf.toString(encoding || "utf8");
         }
     }
-}));
+}));*/
+
+/**
+ * 登录过滤器
+ */
+/*app.use((req, res, next) => {
+    var url = req.originalUrl;
+    if (url.indexOf('expose') <= -1 && url != "/index" && url.indexOf('wechat') <= -1 && req.session.loginUser == undefined) {
+        if(url.indexOf('share') <= -1 )
+            res.json({
+                status: 0,
+                code: -1,
+                msg: '非法请求'
+            });
+        res.end();
+    } else {
+        next();
+    }
+});*/
 
 app.use(cookieParser('dianhai'));
 app.use(session({
@@ -77,6 +103,7 @@ app.use(session({
     }
 }));
 
+app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
@@ -89,7 +116,7 @@ app.use('/public', express.static('public'));
  */
 // app.use('/wechat', wechatFilter.checkSignature());
 
-
+app.use('/', index);
 const account = require('./routes/account');
 app.use('/admin', account);
 const role = require('./routes/role');
@@ -100,6 +127,8 @@ const chat = require('./routes/chat');
 app.use('/chat', chat);
 const domain = require('./routes/domain');
 app.use('/domain', domain);
+var expose = require('./routes/expose');
+app.use('/expose', expose);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

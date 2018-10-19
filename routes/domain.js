@@ -76,6 +76,15 @@ router.post('/domainOneList', (req, res, next) => {
     });
 });
 
+//管理定时任务
+router.post('/domainTimer', (req, res, next) => {
+    let timer = req.body.timer;
+    domainServer.domainTimer(timer, result => {
+        res.send(result);
+    });
+});
+
+
 
 
 

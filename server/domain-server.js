@@ -1,6 +1,27 @@
 const connection = require('../common/db');
 db = new connection('express');
+const schedule = require('node-schedule');
 
+var redis   = require('redis');
+var client  = redis.createClient();
+
+
+//定时任务
+exports.domainTimer = (timer, callback) => {
+    if(timer == 1){
+        //开启定时任务
+        client.set("TimerStatus", "2");
+        this.timer('');
+    }else if(timer == 2){
+        //关闭定时任务
+        this.timer('close');
+        client.set("TimerStatus", "1");
+    }
+    client.get("TimerStatus", function(err, reply) {
+        // reply is null when the key is missing
+        callback(reply);
+    });
+};
 
 //新增内容
 exports.domainAdd = (domain, mark, gid, rand, sort, id, callback) => {
@@ -72,13 +93,27 @@ exports.domainList = (keywords, rand, status, sorts, callback) => {
         replacements: [keywords],
     }).spread((results) => {
         //callback(results);
-        let result = [];
+
+        let result = {
+            data : [],
+            timer : ''
+        };
+
         for (key in results) {
             if (results.hasOwnProperty(key)) {
-                result.push(results[key]);
+                result.data.push(results[key]);
             }
         }
-        callback(result);
+        client.get("TimerStatus", function(err, reply) {
+            // reply is null when the key is missing
+            if(reply){
+                result.timer = reply;
+            }else{
+                result.timer = 0;
+            }
+            callback(result);
+        });
+
     });
 };
 
