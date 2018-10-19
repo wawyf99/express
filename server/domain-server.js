@@ -1,6 +1,5 @@
 const connection = require('../common/db');
 db = new connection('express');
-const schedule = require('node-schedule');
 
 var redis   = require('redis');
 var client  = redis.createClient();
