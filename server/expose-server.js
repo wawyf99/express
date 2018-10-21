@@ -8,7 +8,26 @@ exports.exposeDomain = (callback) => {
     db.query("SELECT id, domain FROM express.T_Domain WHERE `status` != 0", {
         replacements: []
     }).spread((results) => {
-        callback(results);
+        var result = {
+            data:[]
+        };
+        if(results){
+            result.status = true;
+            for (key in results) {
+                if (results.hasOwnProperty(key)) {
+                    var _a = result.data;
+
+                    var _b = {
+                        'id' : '',
+                        'url' : ''
+                    };
+                    _b.id = results[key]['id'];
+                    _b.url = results[key]['domain'];
+                    _a.push(_b);
+                }
+            }
+            callback(result);
+        }
     });
 };
 

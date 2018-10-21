@@ -6,7 +6,7 @@ const exposeServer = require('../server/expose-server');
 /* 暴露域名*/
 router.get('/exportDomain', function(req, res, next) {
     exposeServer.exposeDomain(result => {
-        res.send(result);
+        res.send(result.data);
     });
 });
 
