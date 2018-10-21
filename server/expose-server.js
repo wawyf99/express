@@ -5,6 +5,7 @@ db = new connection('express');
 
 /* 暴露域名*/
 exports.exposeDomain = (callback) => {
+
     db.query("SELECT id, domain FROM express.T_Domain WHERE `status` != 0", {
         replacements: []
     }).spread((results) => {
