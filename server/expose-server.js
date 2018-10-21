@@ -21,7 +21,7 @@ exports.exposeDomain = (callback) => {
                         'id' : '',
                         'url' : ''
                     };
-                    _b.id = results[key]['id'];
+                    _b.id = results[key]['id'].toString();
                     _b.url = results[key]['domain'];
                     _a.push(_b);
                 }
