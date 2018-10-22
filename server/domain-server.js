@@ -102,7 +102,7 @@ exports.domainList = (keywords, rand, status, sorts, callback) => {
                 result.data.push(results[key]);
             }
         }
-
+        callback(result);
     });
 };
 
