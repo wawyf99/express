@@ -24,6 +24,9 @@ exports.exportDomain = (callback) => {
                 }
             }
             callback(result);
+        }else{
+            //更新redis
+            redisController.redisController.updateRedis();
         }
     });
 
