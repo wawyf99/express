@@ -86,7 +86,9 @@ const redisController = {
                 redis.hgetall(_name, function (err, result) {
                     if(result){
                         redisController.assemblyRedis(result).then(resss=>{
-                            redisController.results.status = true;
+                            if(redisController.results.data.length > 0){
+                                redisController.results.status = true;
+                            }
                             resolve(redisController.results);
                         });
                     }else{

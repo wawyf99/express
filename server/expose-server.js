@@ -11,6 +11,7 @@ exports.exportDomain = (callback) => {
         var result = {
             data:[]
         };
+        //console.log(res);
         if(res.status){
             for (key in results) {
                 if (results.hasOwnProperty(key)) {
