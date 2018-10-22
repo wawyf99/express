@@ -63,7 +63,7 @@ exports.exportDomain = (callback) => {
 
 /* 处理域名*/
 exports.detectionDomain = (id, callback) => {
-    db.query("UPDATE `express`.`T_Domain` SET `status` = 0 WHERE `id` = ?", {
+    db.query("UPDATE `express`.`T_Domain` SET `status` = 0, `close_time` = now() WHERE `id` = ?", {
         replacements: [id]
     }).spread((results) => {
         let result = {};
