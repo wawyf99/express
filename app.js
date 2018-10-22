@@ -18,7 +18,7 @@ var app = express();
 const ALLOW_ORIGIN = [ // 域名白名单
     'www.lyxkjx.com',
     'www.rzzc.ltd',
-    'localhost'
+    'localhost',
 ];
 
 app.all('*', function (req, res, next) {
@@ -29,7 +29,7 @@ app.all('*', function (req, res, next) {
             if(ALLOW_ORIGIN[i] == 'localhost'){
                 _str = 'localhost';
             }else{
-                _str = ALLOW_ORIGIN[i].split('www.')[1];
+                _str = ALLOW_ORIGIN[i];
             }
             if(reqOrigin.indexOf(_str) >= 0){
                 res.header("Access-Control-Allow-Origin", reqOrigin);
