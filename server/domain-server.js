@@ -1,8 +1,7 @@
 const connection = require('../common/db');
 db = new connection('express');
+const redisController = require('../common/redis');
 
-var redis   = require('redis');
-var client  = redis.createClient();
 
 
 //定时任务
@@ -16,10 +15,6 @@ exports.domainTimer = (timer, callback) => {
         this.timer('close');
         client.set("TimerStatus", "1");
     }
-    client.get("TimerStatus", function(err, reply) {
-        // reply is null when the key is missing
-        callback(reply);
-    });
 };
 
 //新增内容
@@ -32,6 +27,8 @@ exports.domainAdd = (domain, mark, gid, rand, sort, id, callback) => {
             result.status = true;
             result.msg = '更新成功';
             result.data = res;
+            //更新redis
+            redisController.redisController.updateRedis();
             callback(result);
         });
     }else{
@@ -48,6 +45,8 @@ exports.domainAdd = (domain, mark, gid, rand, sort, id, callback) => {
                 db.query("INSERT INTO `express`.`T_Domain`(`domain`, `mark`, `gid`, `rand`, `sort`, `create_time`, `status`) VALUES (?, ?, ?, ?, ?, NOW(), 1)", {
                     replacements: [domain, mark, gid, rand, sort],
                 }).spread((res) => {
+                    //更新redis
+                    redisController.redisController.updateRedis();
                     result.status = true;
                     result.msg = '新增域名成功';
                     result.data = res;
@@ -103,15 +102,6 @@ exports.domainList = (keywords, rand, status, sorts, callback) => {
                 result.data.push(results[key]);
             }
         }
-        client.get("TimerStatus", function(err, reply) {
-            // reply is null when the key is missing
-            if(reply){
-                result.timer = reply;
-            }else{
-                result.timer = 0;
-            }
-            callback(result);
-        });
 
     });
 };
@@ -123,6 +113,8 @@ exports.domainDelete = (id, callback) => {
     }).spread((results) => {
         let result = {};
         if(results.affectedRows > 0){
+            //更新redis
+            redisController.redisController.updateRedis();
             result.status = true;
             result.msg = '删除成功';
             result.data = '';
@@ -143,6 +135,8 @@ exports.operation = (id, status, callback) => {
     }).spread((results) => {
         let result = {};
         if(results.affectedRows > 0){
+            //更新redis
+            redisController.redisController.updateRedis();
             result.status = true;
             result.msg = '删除成功';
             result.data = '';

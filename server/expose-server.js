@@ -1,17 +1,42 @@
 const connection = require('../common/db');
 db = new connection('express');
-var redis   = require('redis');
-var client  = redis.createClient();
+const redisController = require('../common/redis');
 
 
 /* 暴露域名*/
 exports.exportDomain = (callback) => {
-    db.query("SELECT id, domain FROM express.T_Domain WHERE `status` != 0", {
+    //从redis中获取域名
+    redisController.redisController.getRedis().then(res =>{
+        var results = res.data;
+        var result = {
+            data:[]
+        };
+        if(res.status){
+            for (key in results) {
+                if (results.hasOwnProperty(key)) {
+                    var _b = {
+                        'id' : '',
+                        'url' : ''
+                    };
+                    _b.id = results[key]['id'];
+                    _b.url = results[key]['url'];
+                    result.data.push(_b);
+                }
+            }
+            callback(result);
+        }
+    });
+
+    //redisController.redisController.updateRedis();
+
+    //从数据库直接区;
+    /*db.query("SELECT id, domain FROM express.T_Domain WHERE `status` != 0", {
         replacements: []
     }).spread((results) => {
         var result = {
             data:[]
         };
+        console.log(results);
         if(results){
             result.status = true;
             for (key in results) {
@@ -29,7 +54,7 @@ exports.exportDomain = (callback) => {
             }
             callback(result);
         }
-    });
+    });*/
 };
 
 /* 处理域名*/
@@ -40,6 +65,7 @@ exports.detectionDomain = (id, callback) => {
         let result = {};
         if(results.affectedRows > 0){
             //更新redis
+            redisController.redisController.updateRedis();
             result.status = true;
             callback(result);
         }
