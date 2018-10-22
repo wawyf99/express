@@ -17,7 +17,7 @@ var app = express();
 
 const ALLOW_ORIGIN = [ // 域名白名单
     'www.lyxkjx.com',
-    'www.rzzc.ltd',
+    'rzzc.ltd',
     'localhost',
 ];
 
