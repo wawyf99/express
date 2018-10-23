@@ -111,10 +111,8 @@ router.get('/receive', function (req, res) {
  * 根据消息类型做处理后,响应微信服务器
  */
 router.post('/receive', function (req, res, next) {
-    console.log('postReceive');
-    console.log(req);
     //非法请求
-    /*if (!utils.wechat.checkSignature(req))
+    if (!utils.wechat.checkSignature(req))
         return;
     utils.wechat.loop(req).then(r => {
 
@@ -128,7 +126,7 @@ router.post('/receive', function (req, res, next) {
         }
     });
     //响应微信服务器
-    res.send('success');*/
+    res.send('success');
 });
 
 router.post('/wxinfo', (req, res, next) => {
