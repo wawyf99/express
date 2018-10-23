@@ -111,11 +111,11 @@ router.get('/receive', function (req, res) {
  * 根据消息类型做处理后,响应微信服务器
  */
 router.post('/receive', function (req, res, next) {
+    console.log('postReceive');
     //非法请求
     if (!utils.wechat.checkSignature(req))
         return;
     utils.wechat.loop(req).then(r => {
-
         //处理微信发送的消息业务
         if (r.type === 'text') {
             utils.wechatUtil.receiveMessage(r.messageParameter);

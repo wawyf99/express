@@ -160,9 +160,7 @@ const wechat = {
             var self = this;
             var buf = '';
             var wechatMsg = req.body.xml;
-            console.log(wechatMsg);
-            /*switch (wechatMsg.msgtype) {
-
+            switch (wechatMsg.msgtype) {
                 case 'text':
                     self.type = 'text';
                     self.messageParameter = {
@@ -186,7 +184,7 @@ const wechat = {
                     }
                     break;
             }
-            resovle(self);*/
+            resovle(self);
         }).catch(err => {
             console.log(err);
             reject(err);
