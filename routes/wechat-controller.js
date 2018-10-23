@@ -112,10 +112,12 @@ router.get('/receive', function (req, res) {
  */
 router.post('/receive', function (req, res, next) {
     console.log('postReceive');
+    console.log(req);
     //非法请求
-    if (!utils.wechat.checkSignature(req))
+    /*if (!utils.wechat.checkSignature(req))
         return;
     utils.wechat.loop(req).then(r => {
+
         //处理微信发送的消息业务
         if (r.type === 'text') {
             utils.wechatUtil.receiveMessage(r.messageParameter);
@@ -126,7 +128,7 @@ router.post('/receive', function (req, res, next) {
         }
     });
     //响应微信服务器
-    res.send('success');
+    res.send('success');*/
 });
 
 router.post('/wxinfo', (req, res, next) => {
