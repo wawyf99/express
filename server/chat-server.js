@@ -1,5 +1,6 @@
 const connection = require('../common/db'),
 db = new connection('express');
+const redisController = require('../common/redis');
 
 
 //获取群聊信息
@@ -11,7 +12,17 @@ exports.getTitle = (callback) => {
         callback(results);
     });
 };
+//获取群聊分享链接A1
+exports.getWxShare = (callback) => {
+    redisController.redisController.getRedisA1().then(res => {
+        var result = {
+            status : true,
+            data : res
+        };
+        callback(result);
+    })
 
+};
 //管理群聊信息
 exports.manageTitle = (keywords, callback) => {
     let _sql = '';

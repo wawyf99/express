@@ -18,6 +18,15 @@ router.post('/get-title', (req, res, next) => {
     });
 });
 
+/*
+* 获取微信分享链接A1
+* */
+router.post('/getWxShare', (req, res, next) => {
+    chatServer.getWxShare(result => {
+        res.send(result);
+    });
+});
+
 /**
  * 管理群聊信息
  */

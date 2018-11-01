@@ -114,6 +114,24 @@ const redisController = {
             }
             resolve(redisController.results.data);
         });
+    },
+    //获取A1
+    getRedisA1:function (result) {
+        return new Promise(function (resolve, reject) {
+            redis.select(0);
+            redis.hgetall('A1', function (err, result) {
+                if(result){
+                    redisController.assemblyRedis(result).then(resss=>{
+                        if(redisController.results.data.length > 0){
+                            redisController.results.status = true;
+                        }
+                        resolve(redisController.results);
+                    });
+                }else{
+                    console.log(err);
+                }
+            });
+        })
     }
 };
 
