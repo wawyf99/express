@@ -29,10 +29,10 @@ exports.getWxShare = (callback) => {
         var _randWord = this.getRandWords(false, 4);
         if(arr[index][2] == 2){
             //随机
-            _str = "https://"+_randWord+"."+arr[index][1]+"/?wxid=";
+            _str = "http://"+_randWord+"."+arr[index][1]+"/?wxid=";
         }else{
             //不随机
-            _str = "https://"+arr[index][1]+"/?wxid=";
+            _str = "http://"+arr[index][1]+"/?wxid=";
         }
         callback(_str);
     })
@@ -133,10 +133,10 @@ exports.domainSkip = (type, callback) => {
                 var _randWord = this.getRandWords(false, 4);
                 if(arr[index][2] == 2){
                     //随机
-                    _str = "https://"+_randWord+"."+arr[index][1]+"/mark2?wxid=";
+                    _str = "http://"+_randWord+"."+arr[index][1]+"/mark2?wxid=";
                 }else{
                     //不随机
-                    _str = "https://"+arr[index][1]+"/mark2?wxid=";
+                    _str = "http://"+arr[index][1]+"/mark2?wxid=";
                 }
                 callback(_str);
             })
@@ -157,10 +157,10 @@ exports.domainSkip = (type, callback) => {
                 var _randWord = this.getRandWords(false, 4);
                 if(arr[index][2] == 2){
                     //随机
-                    _str = "https://"+_randWord+"."+arr[index][1]+"/mark3?wxid=";
+                    _str = "http://"+_randWord+"."+arr[index][1]+"/mark3?wxid=";
                 }else{
                     //不随机
-                    _str = "https://"+arr[index][1]+"/mark3?wxid=";
+                    _str = "http://"+arr[index][1]+"/mark3?wxid=";
                 }
                 callback(_str);
             })
@@ -181,10 +181,10 @@ exports.domainSkip = (type, callback) => {
                 var _randWord = this.getRandWords(false, 4);
                 if(arr[index][2] == 2){
                     //随机
-                    _str = "https://"+_randWord+"."+arr[index][1]+"/mark4?wxid=";
+                    _str = "http://"+_randWord+"."+arr[index][1]+"/mark4?wxid=";
                 }else{
                     //不随机
-                    _str = "https://"+arr[index][1]+"/mark4?wxid=";
+                    _str = "http://"+arr[index][1]+"/mark4?wxid=";
                 }
                 callback(_str);
             })
