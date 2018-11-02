@@ -20,7 +20,8 @@ exports.exportDomain = (callback) => {
                         'url' : ''
                     };
                     _b.id = results[key]['id'];
-                    _b.url = results[key]['url'];
+                    var _data = JSON.parse(results[key].url);
+                    _b.url = _data.domain;
                     result.data.push(_b);
                 }
             }

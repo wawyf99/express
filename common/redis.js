@@ -15,45 +15,66 @@ const redisController = {
     //更新redis
     updateRedis: function (domain) {
         return new Promise(function (resolve, reject) {
-            db.query("SELECT id, domain, mark FROM express.T_Domain WHERE `status` = 1", {
+            db.query("SELECT id, domain, rand, gid, mark FROM express.T_Domain WHERE `status` = 1", {
                 replacements: []
             }).spread((results) => {
                 //清空整个redis库
-                redis.flushall();
+
+                redis.select(0);
+                redis.flushdb();
+                redis.select(1);
+                redis.flushdb();
+                redis.select(2);
+                redis.flushdb();
+                redis.select(3);
+                redis.flushdb();
+
                 for (key in results) {
                     if (results.hasOwnProperty(key)) {
                         let _id = '',
                             _url = '',
                             _mark = results[key]['mark'],
+                            _data = {
+                                'domain' : '',
+                                'rand' : '',
+                                'gid' : '',
+                            },
                             _name = '';
 
                         switch (_mark) {
                             case 1:
                                 _name = 'A1';
                                 _id = results[key]['id'].toString();
-                                _url = results[key]['domain'];
+                                _data.domain = results[key]['domain'];
+                                _data.rand = results[key]['rand'];
+                                _data.gid = results[key]['gid'];
                                 break;
                             case 2:
                                 _name = 'A2';
                                 _id = results[key]['id'].toString();
-                                _url = results[key]['domain'];
-
+                                _data.domain = results[key]['domain'];
+                                _data.rand = results[key]['rand'];
+                                _data.gid = results[key]['gid'];
                                 break;
                             case 3:
                                 _name = 'B1';
                                 _id = results[key]['id'].toString();
-                                _url = results[key]['domain'];
+                                _data.domain = results[key]['domain'];
+                                _data.rand = results[key]['rand'];
+                                _data.gid = results[key]['gid'];
                                 break;
                             case 4:
                                 _name = 'C1';
                                 _id = results[key]['id'].toString();
-                                _url = results[key]['domain'];
+                                _data.domain = results[key]['domain'];
+                                _data.rand = results[key]['rand'];
+                                _data.gid = results[key]['gid'];
                                 break;
                         }
 
                         //更新redis
                         redis.select(_mark-1);
-                        redis.hmset(_name, _id, _url,function (err, result) {
+                        redis.hmset(_name, _id, JSON.stringify(_data),function (err, result) {
                             console.log(result);
                         });
                     }
@@ -121,14 +142,7 @@ const redisController = {
             redis.select(0);
             redis.hgetall('A1', function (err, result) {
                 if(result){
-                    redisController.assemblyRedis(result).then(resss=>{
-                        if(redisController.results.data.length > 0){
-                            redisController.results.status = true;
-                        }
-                        resolve(redisController.results);
-                    });
-                }else{
-                    console.log(err);
+                    resolve(result);
                 }
             });
         })
