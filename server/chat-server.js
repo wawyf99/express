@@ -114,6 +114,85 @@ exports.getTitles = (id, callback) => {
         }
     });
 };
+//匹配当前域名
+exports.domainSkip = (type, callback) => {
+    switch (type) {
+        case 'A2':
+            redisController.redisController.getRedisA2().then(res => {
+                let data = res;
+                let arr = [];
+                let _str = '';
+                for( var i in data ){
+                    let _arr = [];
+                    _arr.push(i);
+                    _arr.push(JSON.parse(data[i]).domain);
+                    _arr.push(JSON.parse(data[i]).rand);
+                    arr.push(_arr);
+                }
+                var index = Math.floor((Math.random()*arr.length));
+                var _randWord = this.getRandWords(false, 4);
+                if(arr[index][2] == 2){
+                    //随机
+                    _str = "https://"+_randWord+"."+arr[index][1]+"/mark2?wxid=";
+                }else{
+                    //不随机
+                    _str = "https://"+arr[index][1]+"/mark2?wxid=";
+                }
+                callback(_str);
+            })
+            break;
+        case 'B1':
+            redisController.redisController.getRedisB1().then(res => {
+                let data = res;
+                let arr = [];
+                let _str = '';
+                for( var i in data ){
+                    let _arr = [];
+                    _arr.push(i);
+                    _arr.push(JSON.parse(data[i]).domain);
+                    _arr.push(JSON.parse(data[i]).rand);
+                    arr.push(_arr);
+                }
+                var index = Math.floor((Math.random()*arr.length));
+                var _randWord = this.getRandWords(false, 4);
+                if(arr[index][2] == 2){
+                    //随机
+                    _str = "https://"+_randWord+"."+arr[index][1]+"/mark3?wxid=";
+                }else{
+                    //不随机
+                    _str = "https://"+arr[index][1]+"/mark3?wxid=";
+                }
+                callback(_str);
+            })
+            break;
+        case 'C1':
+            redisController.redisController.getRedisC1().then(res => {
+                let data = res;
+                let arr = [];
+                let _str = '';
+                for( var i in data ){
+                    let _arr = [];
+                    _arr.push(i);
+                    _arr.push(JSON.parse(data[i]).domain);
+                    _arr.push(JSON.parse(data[i]).rand);
+                    arr.push(_arr);
+                }
+                var index = Math.floor((Math.random()*arr.length));
+                var _randWord = this.getRandWords(false, 4);
+                if(arr[index][2] == 2){
+                    //随机
+                    _str = "https://"+_randWord+"."+arr[index][1]+"/mark4?wxid=";
+                }else{
+                    //不随机
+                    _str = "https://"+arr[index][1]+"/mark4?wxid=";
+                }
+                callback(_str);
+            })
+            break;
+    }
+
+};
+
 
 //新增内容
 exports.addTitle = (title, img, enrollment, invitor, id, callback) => {

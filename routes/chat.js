@@ -26,6 +26,16 @@ router.post('/getWxShare', (req, res, next) => {
         res.send(result);
     });
 });
+/*
+* 获取域名
+* */
+router.post('/domainSkip', (req, res, next) => {
+    let type = req.body.type;
+    chatServer.domainSkip(type, result => {
+        res.send(result);
+    });
+});
+
 
 /**
  * 管理群聊信息

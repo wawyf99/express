@@ -146,6 +146,39 @@ const redisController = {
                 }
             });
         })
+    },
+    //获取A2
+    getRedisA2:function (result) {
+        return new Promise(function (resolve, reject) {
+            redis.select(1);
+            redis.hgetall('A2', function (err, result) {
+                if(result){
+                    resolve(result);
+                }
+            });
+        })
+    },
+    //获取B1
+    getRedisB1:function (result) {
+        return new Promise(function (resolve, reject) {
+            redis.select(2);
+            redis.hgetall('B1', function (err, result) {
+                if(result){
+                    resolve(result);
+                }
+            });
+        })
+    },
+    //获取C1
+    getRedisC1:function (result) {
+        return new Promise(function (resolve, reject) {
+            redis.select(3);
+            redis.hgetall('C1', function (err, result) {
+                if(result){
+                    resolve(result);
+                }
+            });
+        })
     }
 };
 
