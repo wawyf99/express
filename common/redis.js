@@ -179,6 +179,52 @@ const redisController = {
                 }
             });
         })
+    },
+    //更新分享的redis
+    updateShareRedis:function () {
+        return new Promise(function (resolve, reject) {
+            db.query("SELECT id, title, `describe`, logo, flock_title, flock_logo FROM express.T_Wx_Share WHERE `sort` = 1", {
+                replacements: []
+            }).spread((results) => {
+                redis.select(4);
+                redis.flushdb();
+                    for (key in results) {
+                        if (results.hasOwnProperty(key)) {
+                            let _id = '',
+                                _data = {
+                                    'title' : '',
+                                    'describe' : '',
+                                    'logo' : '',
+                                    'flock_title' : '',
+                                    'flock_logo' : ''
+                                };
+
+                            _id = results[key]['id'].toString();
+                            _data.title = results[key]['title'];
+                            _data.describe = results[key]['describe'];
+                            _data.logo = results[key]['logo'];
+                            _data.flock_title = results[key]['flock_title'];
+                            _data.flock_logo = results[key]['flock_logo'];
+                            //更新redis
+                            redis.select(4);
+                            redis.hmset('WxShare', _id, JSON.stringify(_data),function (err, result) {
+                                console.log(result);
+                            });
+                        }
+                    }
+                })
+            })
+    },
+    //随机取出一个分享配置
+    getWxShareConfig:function () {
+        return new Promise(function (resolve, reject) {
+            redis.select(4);
+            redis.hgetall('WxShare', function (err, result) {
+                if(result){
+                    resolve(result);
+                }
+            });
+        })
     }
 };
 

@@ -34,7 +34,45 @@ exports.getWxShare = (callback) => {
             //不随机
             _str = "http://"+arr[index][1]+"/?wxid=";
         }
-        callback(_str);
+
+        if(_str){
+            redisController.redisController.getWxShareConfig().then(sss => {
+                let results = {
+                    'url': _str,
+                    'id' : '',
+                    'title' : '',
+                    'describe' : '',
+                    'logo' : '',
+                    'flock_title' : '',
+                    'flock_logo' : '',
+                };
+                let data = sss;
+                let arr = [];
+                for( var i in data ){
+                    let _arr = [];
+                    _arr.push(i);
+                    _arr.push(JSON.parse(data[i]).title);
+                    _arr.push(JSON.parse(data[i]).describe);
+                    _arr.push(JSON.parse(data[i]).logo);
+                    _arr.push(JSON.parse(data[i]).flock_title);
+                    _arr.push(JSON.parse(data[i]).flock_logo);
+                    arr.push(_arr);
+                }
+                var index = Math.floor((Math.random()*arr.length));
+                results.id = arr[index][0];
+                results.title = arr[index][1];
+                results.describe = arr[index][2];
+                results.logo = arr[index][3];
+                results.flock_title = arr[index][4];
+                results.flock_logo = arr[index][5];
+                callback(results);
+            })
+        }
+        //获取分享信息;
+        /*redisController.redisController.getWxShareConfig().then(sss => {
+            console.log(sss);
+        })*/
+        /*callback(_str);*/
     })
 };
 
@@ -200,6 +238,7 @@ exports.addTitle = (title, img, enrollment, invitor, id, callback) => {
         db.query("UPDATE `express`.`T_Chart_Info` SET `title` = ?, `img` = ?, `enrollment` = ?, `invitor` = ? WHERE `id` = ?", {
             replacements: [title, img, enrollment, invitor, id],
         }).spread((res) => {
+            redisController.redisController.updateShareRedis();
             let result = {};
             result.status = true;
             result.msg = '更新成功';
@@ -220,6 +259,7 @@ exports.addTitle = (title, img, enrollment, invitor, id, callback) => {
                 db.query("INSERT INTO `express`.`T_Chart_Info`(`title`, `img`, `enrollment`, `invitor`) VALUES (?, ?, ?, ?)", {
                     replacements: [title, img, enrollment, invitor],
                 }).spread((res) => {
+                    redisController.redisController.updateShareRedis();
                     result.status = true;
                     result.msg = '新增成功';
                     result.data = res;
@@ -230,3 +270,126 @@ exports.addTitle = (title, img, enrollment, invitor, id, callback) => {
     }
 };
 
+
+//获取微信自定义分享列表
+
+exports.wxShareList = (keywords, callback) => {
+
+    let _sql = '';
+    if(keywords){
+        _sql = "SELECT * FROM express.T_Wx_Share WHERE title LIKE '%"+keywords+"%' ORDER BY id ASC";
+    }else{
+        _sql = "SELECT * FROM express.T_Wx_Share ORDER BY id ASC";
+    }
+    db.query(_sql, {
+        replacements: [keywords],
+    }).spread((results) => {
+        //callback(results);
+        let result = [];
+        for (key in results) {
+            if (results.hasOwnProperty(key)) {
+                result.push(results[key]);
+            }
+        }
+        callback(result);
+    });
+};
+
+//微信自定义禁用
+exports.wxShareOperation = (id, sort, callback) => {
+    db.query("UPDATE `express`.`T_Wx_Share` SET `sort` = ? WHERE `id` = ?", {
+        replacements: [sort, id]
+    }).spread((results) => {
+        let result = {};
+
+        if(results.affectedRows > 0){
+            //更新redis
+            redisController.redisController.updateShareRedis();
+            result.status = true;
+            result.msg = '更改状态成功';
+            result.data = '';
+            callback(result);
+        }else{
+            result.status = false;
+            result.msg = '请勿重复操作';
+            result.data = '';
+            callback(result);
+        }
+    });
+};
+
+//获取单条记录
+exports.wxShareOne = (id, callback) => {
+    db.query("SELECT * FROM express.T_Wx_Share WHERE `id` = ?", {
+        replacements: [id]
+    }).spread((results) => {
+        let result = {};
+        if(results){
+            result.status = true;
+            result.msg = '';
+            result.data = results;
+            callback(result);
+        }
+    });
+};
+
+//删除
+exports.wxShareDelete = (id, callback) => {
+    db.query("DELETE FROM `T_Wx_Share` WHERE `id`= ?", {
+        replacements: [id]
+    }).spread((results) => {
+        let result = {};
+        if(results.affectedRows > 0){
+            //更新redis
+            redisController.redisController.updateShareRedis();
+            result.status = true;
+            result.msg = '删除成功';
+            result.data = '';
+            callback(result);
+        }else{
+            result.status = false;
+            result.msg = '请勿重复操作';
+            result.data = '';
+            callback(result);
+        }
+    });
+};
+
+
+//新增微信分享自定义
+exports.wxShareAdd = (title, describe, logo, flock_title, flock_logo, id, callback) => {
+    if(id){
+        db.query("UPDATE `express`.`T_Wx_Share` SET `title` = ?, `describe` = ?, `logo` = ?, `flock_title` = ?, `flock_logo` = ? WHERE `id` = ?", {
+            replacements: [title, describe, logo, flock_title, flock_logo, id],
+        }).spread((res) => {
+            redisController.redisController.updateShareRedis();
+            let result = {};
+            result.status = true;
+            result.msg = '更新成功';
+            result.data = res;
+            callback(result);
+        });
+    }else{
+        db.query("SELECT * FROM express.T_Chart_Info WHERE title = ?", {
+            replacements: [title]
+        }).spread((results) => {
+            let result = {};
+            if(results.length > 0){
+                result.status = false;
+                result.msg = '该名称已存在';
+                result.data = '';
+                callback(result);
+            }else{
+                db.query("INSERT INTO `express`.`T_Wx_Share`(`title`, `describe`, `logo`, `flock_title`, `flock_logo`, `sort`, `create_time`) VALUES (?, ?, ?, ?, ?, ?, NOW())", {
+                    replacements: [title, describe, logo, flock_title, flock_logo, 1],
+                }).spread((res) => {
+                    redisController.redisController.updateShareRedis();
+                    result.status = true;
+                    result.msg = '新增成功';
+                    result.data = res;
+                    callback(result);
+                });
+            }
+        });
+    }
+};

@@ -19,6 +19,65 @@ router.post('/get-title', (req, res, next) => {
 });
 
 /*
+* 微信自定义分享列表
+* */
+router.post('/wxShareList', (req, res, next) => {
+    let keywords = '';
+    chatServer.wxShareList(keywords, result => {
+        res.send(result);
+    });
+})
+
+
+/*
+* 微信自定义分享 新增
+* */
+
+router.post('/wxShareAdd', (req, res, next) => {
+    let title = req.body.title,
+        describe = req.body.describe,
+        logo = req.body.logo,
+        flock_title = req.body.flock_title,
+        flock_logo = req.body.flock_logo,
+        id = req.body.id;
+    chatServer.wxShareAdd(title, describe, logo, flock_title, flock_logo, id, result => {
+        res.send(result);
+    });
+})
+
+/*
+* 微信自定义分享 禁用
+* */
+router.post('/wxShareOperation', (req, res, next) => {
+    let id = req.body.id,
+        sort = req.body.sort;
+    chatServer.wxShareOperation(id, sort,  result => {
+        res.send(result);
+    });
+})
+
+/*
+* 查询记录
+* */
+router.post('/wxShareOne', (req, res, next) => {
+    let id = req.body.id;
+    chatServer.wxShareOne(id, result => {
+        res.send(result);
+    });
+})
+
+/*
+* 删除
+* */
+router.post('/wxShareDelete', (req, res, next) => {
+    let id = req.body.id;
+    chatServer.wxShareDelete(id, result => {
+        res.send(result);
+    });
+})
+
+
+/*
 * 获取微信分享链接A1
 * */
 router.post('/getWxShare', (req, res, next) => {
@@ -26,6 +85,8 @@ router.post('/getWxShare', (req, res, next) => {
         res.send(result);
     });
 });
+
+
 /*
 * 获取域名
 * */
