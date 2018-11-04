@@ -22,7 +22,8 @@ const ALLOW_ORIGIN = [ // 域名白名单
     'xin.shiershi.hsk.la',
     'xin.shiyiyiba.hsk.la',
     'xin.shiyue.hsk.la',
-    'rzzc.ltd'
+    'working.rzzc.ltd',
+    'working.admin.rzzc.ltd'
 ];
 
 app.all('*', function (req, res, next) {
