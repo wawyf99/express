@@ -21,7 +21,8 @@ const ALLOW_ORIGIN = [ // 域名白名单
     'm.shanbei-sat.com',
     'xin.shiershi.hsk.la',
     'xin.shiyiyiba.hsk.la',
-    'xin.shiyue.hsk.la'
+    'xin.shiyue.hsk.la',
+    'rzzc.ltd'
 ];
 
 app.all('*', function (req, res, next) {
