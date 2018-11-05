@@ -1,11 +1,10 @@
 const connection = require('../common/db'),
 db = new connection('express');
 const redisController = require('../common/redis');
-const ip = require('../common/ip');
+
 
 //获取群聊信息
 exports.getTitle = (callback) => {
-    console.log(ip.ip.getLocalIP());
     db.query("SELECT * FROM express.T_Chart_Info ORDER BY RAND() LIMIT 1", {
         replacements: [],
         type: db.QueryTypes.SELECT
@@ -13,8 +12,6 @@ exports.getTitle = (callback) => {
         callback(results);
     });
 };
-
-
 //获取群聊分享链接A1
 exports.getWxShare = (callback) => {
     redisController.redisController.getRedisA1().then(res => {
