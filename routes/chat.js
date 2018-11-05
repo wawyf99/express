@@ -126,6 +126,17 @@ router.post('/addTitle', (req, res, next) => {
 * 获取单条内容
 * */
 router.post('/getTitle', (req, res, next) => {
+
+    var ip = req.headers['x-forwarded-for'] ||
+        req.ip ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress || '';
+    if(ip.split(',').length>0){
+        ip = ip.split(',')[0]
+    }
+   console.log(ip);
+
     let id = req.body.id;
     chatServer.getTitles(id, result => {
         res.send(result);
