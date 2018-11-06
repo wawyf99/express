@@ -16,6 +16,8 @@ var app = express();
  * 跨域设置
  */
 
+var arr =[]
+
 const ALLOW_ORIGIN = [ // 域名白名单
     'm.shanbei-course.com',
     'localhost',
