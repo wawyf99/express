@@ -7,7 +7,7 @@ const dbConfig = {
         host: '116.196.122.80',
         db: 'express',
         uid: 'express',
-        pwd: '3wrZs7bhAi4GemnH',
+        pwd: 'k6tKzkBAWapcer4N',
         dialect: 'mysql',
         port: 3306,
     },
