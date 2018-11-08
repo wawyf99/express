@@ -18,4 +18,14 @@ router.get('/exportDomain', function(req, res, next) {
 
 });
 
+/*暴露一个B域名*/
+router.get('/exportA1', function(req, res, next) {
+    exposeServer.exportA1(result => {
+        let results = {
+            "url":result
+        }
+        res.send(results);
+    });
+});
+
 module.exports = router;

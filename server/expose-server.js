@@ -76,3 +76,48 @@ exports.detectionDomain = (id, callback) => {
         }
     });
 };
+
+/*暴露一个B1域名*/
+exports.exportA1 = (callback) => {
+    redisController.redisController.getRedisA1().then(res=>{
+        let data = res;
+        let arr = [];
+        let _str = '';
+        for( var i in data ){
+            let _arr = [];
+            _arr.push(i);
+            _arr.push(JSON.parse(data[i]).domain);
+            _arr.push(JSON.parse(data[i]).rand);
+            _arr.push(JSON.parse(data[i]).gid);
+            arr.push(_arr);
+        }
+        var index = Math.floor((Math.random()*arr.length));
+        var _randWord = this.getRandWords(false, 4);
+        if(arr[index][2] == 2){
+            //随机
+            _str = "https://"+_randWord+"."+arr[index][1]+"/?wxid="+arr[index][3];
+        }else{
+            //不随机
+            _str = "https://"+arr[index][1]+"/?wxid="+arr[index][3];
+        }
+        callback(_str);
+    });
+};
+
+//获取随机字符串
+exports.getRandWords = (randomFlag, min, max, callback) => {
+    var str = "",
+        pos = "",
+        range = min,
+        arr = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
+    // 随机产生
+    if(randomFlag){
+        range = Math.round(Math.random() * (max-min)) + min;
+    }
+    for(var i=0; i<range; i++){
+        pos = Math.round(Math.random() * (arr.length-1));
+        str += arr[pos];
+    }
+    return str;
+};
