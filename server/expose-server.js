@@ -79,7 +79,7 @@ exports.detectionDomain = (id, callback) => {
 
 /*暴露一个B1域名*/
 exports.exportA1 = (callback) => {
-    redisController.redisController.getRedisA1().then(res=>{
+    redisController.redisController.getRedisB1().then(res=>{
         let data = res;
         let arr = [];
         let _str = '';

@@ -18,27 +18,30 @@ exports.getWxShare = (callback) => {
         let data = res;
         let arr = [];
         let _str = '';
+        let wxid = '';
         for( var i in data ){
             let _arr = [];
             _arr.push(i);
             _arr.push(JSON.parse(data[i]).domain);
             _arr.push(JSON.parse(data[i]).rand);
+            _arr.push(JSON.parse(data[i]).gid);
             arr.push(_arr);
         }
         var index = Math.floor((Math.random()*arr.length));
         var _randWord = this.getRandWords(false, 4);
         if(arr[index][2] == 2){
             //随机
-            _str = "http://"+_randWord+"."+arr[index][1]+"/?wxid=";
+            _str = "http://"+_randWord+"."+arr[index][1]+"/mark1";
         }else{
             //不随机
-            _str = "http://"+arr[index][1]+"/?wxid=";
+            _str = "http://"+arr[index][1]+"/mark1";
         }
-
+        wxid = arr[index][3];
         if(_str){
             redisController.redisController.getWxShareConfig().then(sss => {
                 let results = {
                     'url': _str,
+                    'wxid': wxid,
                     'id' : '',
                     'title' : '',
                     'describe' : '',
@@ -171,10 +174,10 @@ exports.domainSkip = (type, callback) => {
                 var _randWord = this.getRandWords(false, 4);
                 if(arr[index][2] == 2){
                     //随机
-                    _str = "http://"+_randWord+"."+arr[index][1]+"/mark2?wxid=";
+                    _str = "http://"+_randWord+"."+arr[index][1]+"/mark2";
                 }else{
                     //不随机
-                    _str = "http://"+arr[index][1]+"/mark2?wxid=";
+                    _str = "http://"+arr[index][1]+"/mark2";
                 }
                 callback(_str);
             })
@@ -195,10 +198,10 @@ exports.domainSkip = (type, callback) => {
                 var _randWord = this.getRandWords(false, 4);
                 if(arr[index][2] == 2){
                     //随机
-                    _str = "http://"+_randWord+"."+arr[index][1]+"/mark3?wxid=";
+                    _str = "http://"+_randWord+"."+arr[index][1]+"/mark3";
                 }else{
                     //不随机
-                    _str = "http://"+arr[index][1]+"/mark3?wxid=";
+                    _str = "http://"+arr[index][1]+"/mark3";
                 }
                 callback(_str);
             })
@@ -220,10 +223,10 @@ exports.domainSkip = (type, callback) => {
                 console.log(arr[index]);
                 if(arr[index][2] == 2){
                     //随机
-                    _str = "http://"+_randWord+"."+arr[index][1]+"/mark4?wxid=";
+                    _str = "http://"+_randWord+"."+arr[index][1]+"/mark4";
                 }else{
                     //不随机
-                    _str = "http://"+arr[index][1]+"/mark4?wxid=";
+                    _str = "http://"+arr[index][1]+"/mark4";
                 }
                 callback(_str);
             })
