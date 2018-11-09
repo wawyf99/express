@@ -22,6 +22,7 @@ const ALLOW_ORIGIN = [ // 域名白名单
     'm.shanbei-course.com',
     'localhost',
     'm.shanbei-sat.com',
+    'https://m.shanbei-sat.com',
     'xin.shiershi.hsk.la',
     'xin.shiyiyiba.hsk.la',
     'xin.shiyue.hsk.la',
