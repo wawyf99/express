@@ -1,41 +1,33 @@
 #!/usr/bin/env node
 
-var path = require('path');
-var fs = require('fs');
 /**
  * Module dependencies.
  */
 
 var app = require('../app');
 var debug = require('debug')('dh.agent.api:server');
-var https = require('https');
+var http = require('http');
 
 /**
  * Get port from environment and store in Express.
  */
-//根据项目的路径导入生成的证书文件
-var privateKey  = fs.readFileSync(path.join(__dirname, './certificate/private.pem'), 'utf8');
-var certificate = fs.readFileSync(path.join(__dirname, './certificate/file.crt'), 'utf8');
-var credentials = {key: privateKey, cert: certificate};
-
-var httpsServer = https.createServer(credentials, app);
-
-//可以分别设置http、https的访问端口号
 
 var port = normalizePort(process.env.PORT || '3030');
+app.set('port', port);
 
-//创建http服务器
-httpsServer.listen(port, function() {
-    console.log('HTTPS Server is running on: https://localhost:%s', port);
-});
+/**
+ * Create HTTP server.
+ */
 
-
+var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-httpsServer.on('error', onError);
-httpsServer.on('listening', onListening);
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -90,7 +82,7 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = httpsServer.address();
+  var addr = server.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
