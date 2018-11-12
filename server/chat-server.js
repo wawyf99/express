@@ -226,7 +226,7 @@ exports.domainSkip = (type, callback) => {
                     _str = "http://"+_randWord+"."+arr[index][1]+"/mark4";
                 }else{
                     //不随机
-                    _str = "http://"+arr[index][1]+"/mark4";
+                    _str = "http://"+arr[0][1]+"/mark4";
                 }
                 callback(_str);
             })
