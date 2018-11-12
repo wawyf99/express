@@ -187,7 +187,7 @@ const redisController = {
                 replacements: []
             }).spread((results) => {
                 redis.select(4);
-                redis.flushdb();
+                redis.del('WxShare');
                     for (key in results) {
                         if (results.hasOwnProperty(key)) {
                             let _id = '',
