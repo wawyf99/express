@@ -6,7 +6,7 @@ var redis = new Redis({
     port: 6379,          // Redis port
     host: 'jredis-cn-north-1-prod-redis-9wygffb7i5.jdcloud.com',   // Redis host
     family: 4,           // 4 (IPv4) or 6 (IPv6)
-    password: 'redis-9wygffb7i5:Zhuoyue136326400',
+    password: 'Zhuoyue136326400',
 })
 //var client  = redis.createClient();
 const connection = require('../common/db');
