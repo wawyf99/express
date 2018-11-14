@@ -196,6 +196,7 @@ exports.domainSkip = (type, callback) => {
                 }
                 var index = Math.floor((Math.random()*arr.length));
                 var _randWord = this.getRandWords(false, 4);
+                console.log(res);
                 if(arr[index][2] == 2){
                     //随机
                     _str = "http://"+_randWord+"."+arr[0][1]+"/mark3";
