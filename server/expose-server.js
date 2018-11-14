@@ -95,10 +95,10 @@ exports.exportA1 = (callback) => {
         var _randWord = this.getRandWords(false, 4);
         if(arr[index][2] == 2){
             //随机
-            _str = "https://"+_randWord+"."+arr[index][1]+"/?wxid="+arr[index][3];
+            _str = "http://"+_randWord+"."+arr[index][1]+"/mark3";
         }else{
             //不随机
-            _str = "https://"+arr[index][1]+"/?wxid="+arr[index][3];
+            _str = "http://"+arr[index][1]+"/mark3";
         }
         callback(_str);
     });
