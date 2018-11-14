@@ -13,7 +13,7 @@ exports.exportDomain = (callback) => {
         };
         //console.log(res);
         if(res.status){
-            for (key in results) {
+           /* for (key in results) {
                 if (results.hasOwnProperty(key)) {
                     var _b = {
                         'id' : '',
@@ -24,8 +24,8 @@ exports.exportDomain = (callback) => {
                     _b.url = _data.domain;
                     result.data.push(_b);
                 }
-            }
-            callback(result);
+            }*/
+            callback(res);
         }else{
             //更新redis
             redisController.redisController.updateRedis();

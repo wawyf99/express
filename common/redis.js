@@ -91,7 +91,7 @@ const redisController = {
         redisController.results.data = [];
         redisController.results.status = false;
         return new Promise(function (resolve, reject) {
-            var res = '';
+/*            var res = '';
             for(var i = 0; i <= 3; i ++){
                 switch (i) {
                     case 0:
@@ -109,6 +109,7 @@ const redisController = {
                 }
                 redis.select(i);
                 redis.hgetall(_name, function (err, result) {
+                    console.log(result);
                     if(result){
                         redisController.assemblyRedis(result).then(resss=>{
                             if(redisController.results.data.length > 0){
@@ -120,7 +121,59 @@ const redisController = {
                         console.log(err);
                     }
                 });
-            }
+            }*/
+
+            let results = {
+                status : false,
+                data : [],
+            };
+
+            redisController.getRedisA1().then(resa1=>{
+                var arr = {
+                    id : '',
+                    url : '',
+                };
+                for (var t in resa1){
+                    arr.id = t;
+                    arr.url = JSON.parse(resa1[t]).domain;
+                    results.data.push(arr);
+                }
+            })
+            redisController.getRedisA2().then(resa2=>{
+                var arr = {
+                    id : '',
+                    url : '',
+                };
+                for (var t in resa2){
+                    arr.id = t;
+                    arr.url = JSON.parse(resa2[t]).domain;
+                    results.data.push(arr);
+                }
+            })
+            redisController.getRedisB1().then(resb1=>{
+                var arr = {
+                    id : '',
+                    url : '',
+                };
+                for (var t in resb1){
+                    arr.id = t;
+                    arr.url = JSON.parse(resb1[t]).domain;
+                    results.data.push(arr);
+                }
+            })
+            redisController.getRedisC1().then(resc1=>{
+                var arr = {
+                    id : '',
+                    url : '',
+                };
+                for (var t in resc1){
+                    arr.id = t;
+                    arr.url = JSON.parse(resc1[t]).domain;
+                    results.data.push(arr);
+                }
+                results.status = true;
+                resolve(results);
+            })
 
         })
     },
