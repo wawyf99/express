@@ -198,10 +198,10 @@ exports.domainSkip = (type, callback) => {
                 var _randWord = this.getRandWords(false, 4);
                 if(arr[index][2] == 2){
                     //随机
-                    _str = "http://"+_randWord+"."+arr[index][1]+"/mark3";
+                    _str = "http://"+_randWord+"."+arr[0][1]+"/mark3";
                 }else{
                     //不随机
-                    _str = "http://"+arr[index][1]+"/mark3";
+                    _str = "http://"+arr[0][1]+"/mark3";
                 }
                 callback(_str);
             })
@@ -223,7 +223,7 @@ exports.domainSkip = (type, callback) => {
                 console.log(arr[index]);
                 if(arr[index][2] == 2){
                     //随机
-                    _str = "http://"+_randWord+"."+arr[index][1]+"/mark4";
+                    _str = "http://"+_randWord+"."+arr[0][1]+"/mark4";
                 }else{
                     //不随机
                     _str = "http://"+arr[0][1]+"/mark4";
