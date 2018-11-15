@@ -3,9 +3,9 @@
 * */
 var Redis = require('ioredis');
 var redis = new Redis({
-    port: 6379,          // Redis port
+/*    port: 6379,          // Redis port
     host: 'jredis-cn-north-1-prod-redis-9wygffb7i5.jdcloud.com',   // Redis host
-    password: 'redis-9wygffb7i5:Zhuoyue136326400',
+    password: 'redis-9wygffb7i5:Zhuoyue136326400',*/
 })
 //var client  = redis.createClient();
 const connection = require('../common/db');
@@ -258,6 +258,7 @@ const redisController = {
 
                             _id = results[key]['id'].toString();
                             _data.title = results[key]['title'];
+                            _data.id = results[key]['id'];
                             _data.describe = results[key]['describe'];
                             _data.logo = results[key]['logo'];
                             _data.flock_title = results[key]['flock_title'];

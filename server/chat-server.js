@@ -27,7 +27,9 @@ exports.getWxShare = (callback) => {
             _arr.push(JSON.parse(data[i]).gid);
             arr.push(_arr);
         }
+
         var index = Math.floor((Math.random()*arr.length));
+
         var _randWord = this.getRandWords(false, 4);
         if(arr[index][2] == 2){
             //随机
@@ -39,44 +41,75 @@ exports.getWxShare = (callback) => {
         wxid = arr[index][3];
         if(_str){
             redisController.redisController.getWxShareConfig().then(sss => {
-                let results = {
-                    'url': _str,
-                    'wxid': wxid,
-                    'id' : '',
-                    'title' : '',
-                    'describe' : '',
-                    'logo' : '',
-                    'flock_title' : '',
-                    'flock_logo' : '',
-                };
+                let result = {
+                    data:[]
+                }
                 let data = sss;
                 let arr = [];
-                for( var i in data ){
-                    let _arr = [];
-                    _arr.push(i);
-                    _arr.push(JSON.parse(data[i]).title);
-                    _arr.push(JSON.parse(data[i]).describe);
-                    _arr.push(JSON.parse(data[i]).logo);
-                    _arr.push(JSON.parse(data[i]).flock_title);
-                    _arr.push(JSON.parse(data[i]).flock_logo);
-                    arr.push(_arr);
+
+                //对象转数组
+                for (var i in data) {
+                    arr.push(data[i]);
                 }
-                var index = Math.floor((Math.random()*arr.length));
-                results.id = arr[index][0];
-                results.title = arr[index][1];
-                results.describe = arr[index][2];
-                results.logo = arr[index][3];
-                results.flock_title = arr[index][4];
-                results.flock_logo = arr[index][5];
-                callback(results);
+
+                //打乱数组
+                arr = this.shuffle(arr);
+
+                //从数组中随机取出一个
+                let data1 = JSON.parse(arr.splice(0, 1)[0]);
+                let _one = this.createArr(_str, wxid, data1);
+                result.data.push(_one);
+
+                let data2 = JSON.parse(arr.splice(0, 1)[0]);
+                let _two = this.createArr(_str, wxid, data2);
+                result.data.push(_two);
+
+                let data3 = JSON.parse(arr.splice(0, 1)[0]);
+                let _three = this.createArr(_str, wxid, data3);
+                result.data.push(_three);
+
+                let data4 = JSON.parse(arr.splice(0, 1)[0]);
+                let _four = this.createArr(_str, wxid, data4);
+                result.data.push(_four);
+
+                let data5 = JSON.parse(arr.splice(0, 1)[0]);
+                let _five = this.createArr(_str, wxid, data5);
+                result.data.push(_five);
+
+                let data6 = JSON.parse(arr.splice(0, 1)[0]);
+                let _six = this.createArr(_str, wxid, data6);
+                result.data.push(_six);
+
+                callback(result);
+
             })
         }
-        //获取分享信息;
-        /*redisController.redisController.getWxShareConfig().then(sss => {
-            console.log(sss);
-        })*/
-        /*callback(_str);*/
+
     })
+};
+
+
+//拼装数组
+exports.createArr = (_str, wxid, arr, callback) => {
+    let _arr = {
+        'url': _str,
+        'wxid': wxid,
+        'id' : '',
+        'title' : '',
+        'describe' : '',
+        'logo' : '',
+        'flock_title' : '',
+        'flock_logo' : '',
+    };
+
+    _arr.id = arr.id;
+    _arr.title = arr.title;
+    _arr.describe = arr.describe;
+    _arr.logo = arr.logo;
+    _arr.flock_title = arr.flock_title;
+    _arr.flock_logo = arr.flock_logo;
+
+    return _arr;
 };
 
 //获取随机字符串
@@ -96,7 +129,18 @@ exports.getRandWords = (randomFlag, min, max, callback) => {
     }
     return str;
 };
-
+//打乱数组
+exports.shuffle = (a, callback) => {
+    var len = a.length;
+    for(var i=0;i<len;i++){
+        var end = len - 1 ;
+        var index = (Math.random()*(end + 1)) >> 0;
+        var t = a[end];
+        a[end] = a[index];
+        a[index] = t;
+    }
+    return a;
+};
 //管理群聊信息
 exports.manageTitle = (keywords, callback) => {
     let _sql = '';
