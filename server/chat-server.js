@@ -33,10 +33,10 @@ exports.getWxShare = (callback) => {
         var _randWord = this.getRandWords(false, 4);
         if(arr[index][2] == 2){
             //随机
-            _str = "http://"+_randWord+"."+arr[index][1]+"/mark1";
+            _str = "https://"+_randWord+"."+arr[index][1]+"/mark1";
         }else{
             //不随机
-            _str = "http://"+arr[index][1]+"/mark1";
+            _str = "https://"+arr[index][1]+"/mark1";
         }
         wxid = arr[index][3];
         if(_str){
