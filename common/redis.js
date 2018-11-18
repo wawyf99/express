@@ -129,51 +129,57 @@ const redisController = {
             };
 
             redisController.getRedisA1().then(resa1=>{
-                var arr = {
-                    id : '',
-                    url : '',
-                };
                 for (var t in resa1){
+                    var arr = {
+                        id : '',
+                        url : '',
+                    };
                     arr.id = t;
                     arr.url = JSON.parse(resa1[t]).domain;
                     results.data.push(arr);
                 }
+                //console.log(results);
             })
             redisController.getRedisA2().then(resa2=>{
-                var arr = {
-                    id : '',
-                    url : '',
-                };
                 for (var t in resa2){
+                    var arr = {
+                        id : '',
+                        url : '',
+                    };
                     arr.id = t;
                     arr.url = JSON.parse(resa2[t]).domain;
                     results.data.push(arr);
                 }
+              //  console.log(results);
             })
             redisController.getRedisB1().then(resb1=>{
-                var arr = {
-                    id : '',
-                    url : '',
-                };
                 for (var t in resb1){
+                    var arr = {
+                        id : '',
+                        url : '',
+                    };
                     arr.id = t;
                     arr.url = JSON.parse(resb1[t]).domain;
                     results.data.push(arr);
                 }
+                //console.log(results);
             })
             redisController.getRedisC1().then(resc1=>{
-                var arr = {
-                    id : '',
-                    url : '',
-                };
+
                 for (var t in resc1){
+                    var arr = {
+                        id : '',
+                        url : '',
+                    };
                     arr.id = t;
                     arr.url = JSON.parse(resc1[t]).domain;
                     results.data.push(arr);
+
                 }
                 results.status = true;
-                resolve(results);
+
             })
+
 
         })
     },
