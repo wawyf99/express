@@ -173,10 +173,12 @@ const redisController = {
                     };
                     arr.id = t;
                     arr.url = JSON.parse(resc1[t]).domain;
-                    results.data.push(arr);
 
+                    results.data.push(arr);
+                    results.status = true;
+                    resolve(results);
                 }
-                results.status = true;
+
 
             })
 
