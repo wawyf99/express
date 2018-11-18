@@ -29,7 +29,8 @@ const ALLOW_ORIGIN = [ // 域名白名单
     'eatuo.com',
     'shiyisan.shiyueshiba.hsk.la',
     'ajugid.youdao.hsk.la',
-    'eatuo.com'
+    'eatuo.com',
+    'laser518.com'
 ];
 
 app.all('*', function (req, res, next) {
