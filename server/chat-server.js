@@ -1,6 +1,8 @@
 const connection = require('../common/db'),
 db = new connection('express');
 const redisController = require('../common/redis');
+const crypto = require('crypto');
+
 
 
 //获取群聊信息
@@ -29,14 +31,16 @@ exports.getWxShare = (callback) => {
         }
 
         var index = Math.floor((Math.random()*arr.length));
-
         var _randWord = this.getRandWords(false, 4);
+
+        var _pwd = this.aesEncrypt(Date.now()+'RouterA', 'router');
+
         if(arr[index][2] == 2){
             //随机
-            _str = "https://"+_randWord+"."+arr[index][1]+"/mark1";
+            _str = "https://"+_randWord+"."+arr[index][1]+"/"+_pwd;
         }else{
             //不随机
-            _str = "https://"+arr[index][1]+"/mark1";
+            _str = "https://"+arr[index][1]+"/"+_pwd;
         }
         wxid = arr[index][3];
         if(_str){
@@ -86,6 +90,21 @@ exports.getWxShare = (callback) => {
         }
 
     })
+};
+
+//加密算法
+exports.aesEncrypt = (data, key) => {
+    const cipher = crypto.createCipher('aes192', key);
+    var crypted = cipher.update(data, 'utf8', 'hex');
+    crypted += cipher.final('hex');
+    return crypted;
+};
+//解密算法
+exports.aesDecrypt = (encrypted, key) => {
+    const decipher = crypto.createDecipher('aes192', key);
+    var decrypted = decipher.update(encrypted, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
 };
 
 
@@ -240,13 +259,13 @@ exports.domainSkip = (type, callback) => {
                 }
                 var index = Math.floor((Math.random()*arr.length));
                 var _randWord = this.getRandWords(false, 4);
-                console.log(res);
+                var _pwd = this.aesEncrypt(Date.now()+'RouterB', 'router');
                 if(arr[index][2] == 2){
                     //随机
-                    _str = "http://"+_randWord+"."+arr[0][1]+"/mark3";
+                    _str = "http://"+_randWord+"."+arr[0][1]+"/"+_pwd;
                 }else{
                     //不随机
-                    _str = "http://"+arr[0][1]+"/mark3";
+                    _str = "http://"+arr[0][1]+"/"+_pwd;
                 }
                 callback(_str);
             })
@@ -265,13 +284,13 @@ exports.domainSkip = (type, callback) => {
                 }
                 var index = Math.floor((Math.random()*arr.length));
                 var _randWord = this.getRandWords(false, 4);
-                console.log(arr[index]);
+                var _pwd = this.aesEncrypt(Date.now()+'RouterC', 'router');
                 if(arr[index][2] == 2){
                     //随机
-                    _str = "http://"+_randWord+"."+arr[0][1]+"/mark4";
+                    _str = "http://"+_randWord+"."+arr[0][1]+"/"+_pwd;
                 }else{
                     //不随机
-                    _str = "http://"+arr[0][1]+"/mark4";
+                    _str = "http://"+arr[0][1]+"/"+_pwd;
                 }
                 callback(_str);
             })

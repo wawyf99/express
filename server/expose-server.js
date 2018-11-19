@@ -104,7 +104,7 @@ exports.exportA1 = (callback) => {
     });
 };
 
-//获取随机字符串
+//获取
 exports.getRandWords = (randomFlag, min, max, callback) => {
     var str = "",
         pos = "",
